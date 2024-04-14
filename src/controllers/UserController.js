@@ -1,6 +1,7 @@
 const db = require('../db');
 
 const UserController = {
+    // Get all users
     async getAllUsers(req, res) {
         try {
             const [rows] = await db.query('SELECT * FROM users');
@@ -12,6 +13,7 @@ const UserController = {
     },
 
     async getUserById(req, res) {
+        // Get user by id
         try {
             const id = req.params.id;
             const [rows] = await db.query('SELECT * FROM users WHERE id = ?', id);
@@ -27,6 +29,7 @@ const UserController = {
     },
 
     async createUser(req, res) {
+        // Create user
         try {
             console.log(req.body);
             const { name, email, password } = req.body;
@@ -44,6 +47,7 @@ const UserController = {
     },
 
     async updateUser(req, res) {
+        // Update user
         try {
             console.log(req.params);
             const id = req.params.id;
@@ -68,6 +72,7 @@ const UserController = {
     },
 
     async deleteUser(req, res) {
+        // Delete user
         const id = req.params.id;
         try {
             await db.query('DELETE FROM users WHERE id = ?', id);
