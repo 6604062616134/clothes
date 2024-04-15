@@ -4,8 +4,38 @@ const UserController = {
     // Get all users
     async getAllUsers(req, res) {
         try {
-            const [rows] = await db.query('SELECT * FROM users');
-            res.json(rows);
+            const limit = req.query.limit || 2;
+            const page = req.query.page || 1;
+            const offset = (page - 1) * limit;
+            const search = req.query.search || '';
+
+            let sql_count = `SELECT COUNT(*) AS total FROM users`;
+            if(search) {
+                sql_count += ` WHERE name LIKE '%${search}%'`;
+            }
+
+            const [rows_count] = await db.query(sql_count);
+            const total = rows_count[0].total;
+            const total_pages = Math.ceil(total / limit);
+
+            const sort = req.query.sort || 'name';
+            const order = req.query.order || 'ASC';
+
+            let sql = `SELECT * FROM users`;
+            if(search) {
+                sql += ` WHERE name LIKE '%${search}%'`;
+            }
+            sql += ` ORDER BY ${sort} ${order}`;
+            sql += ` LIMIT ${limit} OFFSET ${offset}`;
+
+            // console.log("sql_query-->>",sql);
+            const [rows] = await db.query(sql);
+
+            if(rows.length === 0) {
+                return res.status(404).json({ error: 'NO DATA' });
+            }
+
+            res.json({ rows, total, total_pages, page });
         } catch (error) {
             console.error('Error fetching users:', error);
             res.status(500).json({ error: 'Internal server error' });

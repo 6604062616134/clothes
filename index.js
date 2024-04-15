@@ -14,10 +14,10 @@ const orderRoutes = require('./src/routes/orderRoutes'); //importing route
 app.use('/orders', orderRoutes);
 
 const prodRoutes = require('./src/routes/prodRoutes'); //importing route
-app.use('/prods', prodRoutes);
+app.use('/products', prodRoutes);
 
 const cusRoutes = require('./src/routes/cusRoutes'); //importing route
-app.use('/cus', cusRoutes);
+app.use('/customers', cusRoutes);
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`)

@@ -49,19 +49,17 @@ const cateController = {
         try {
             console.log(req.params);
             const cateid = req.params.cateID;
-            const { cateID,cateName } = req.body;
-            
-            //const modified = new Date();
+            const { cateName } = req.body;
 
-            const sql_params = [cateID,cateName];
+            const sql_params = [cateName];
             
-            if(!cateID || !cateName) {
+            if(!cateName) {
                 return res.status(400).json({ error: 'Invalid request' });
             } else {
                 sql_params.push(cateid);
             }
             
-            await db.query('UPDATE category SET cateID = ?, cateName = ? WHERE cateID = ?', sql_params);
+            await db.query('UPDATE category SET cateName = ? WHERE cateID = ?', sql_params);
             res.json({ message: 'category updated' });
         } catch (error) {
             console.error('Error updating category:', error);

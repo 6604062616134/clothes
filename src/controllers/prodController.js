@@ -53,13 +53,13 @@ const prodController = {
 
             const sql_params = [prodName, price, cateID, quantity, image, descript];
             
-            if(!prodID || !prodName || !price || !cateID || !quantity || !image || !descript) {
+            if(!prodName || !price || !cateID || !quantity || !image || !descript) {
                 return res.status(400).json({ error: 'Invalid request' });
             } else {
                 sql_params.push(prodid);
             }
             
-            await db.query('UPDATE product SET prodID = ?, prodName = ?, price = ?, cateID = ?,quantity = ?, image = ?, descript = ? WHERE prodID = ?', sql_params);
+            await db.query('UPDATE product SET prodName = ?, price = ?, cateID = ?,quantity = ?, image = ?, descript = ? WHERE prodID = ?', sql_params);
             res.json({ message: 'product updated' });
         } catch (error) {
             console.error('Error updating product:', error);
